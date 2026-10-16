@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>心电独立标注</title><link rel="stylesheet" href="annotator.css"></head>
+<body>
+<header><div><span class="eyebrow">离线 · 原始采样 · 人工参考</span><h1>心电独立标注</h1></div><div class="savebox"><span id="saveStatus" role="status">正在打开…</span><button id="save" class="primary">保存 JSON 文件</button><button id="importButton">导入已保存标注</button><input id="importFile" type="file" accept=".json,application/json" hidden></div></header>
+<section class="identity bar"><label>当前 case <select id="caseSelect"></select></label><button id="previousCase">上一份</button><button id="nextCase">下一份</button><label>标注者代号 <input id="reviewer" maxlength="80" placeholder="例如 reviewer01"></label><label>曾看过此片段算法标记？ <select id="exposure"><option value="">尚未填写</option><option value="false">没有</option><option value="true">看过</option></select></label><a id="staticLink" target="_blank" rel="noopener">原静态图</a></section>
+<main>
+<section class="workspace">
+<div class="bar modes" role="group" aria-label="操作模式"><button data-mode="beat" class="active">点击标心搏</button><button data-mode="interval">拖选区间</button><button data-mode="select">选择 / 移动标注</button><button data-mode="pan">平移波形</button><span class="divider"></span><button id="undo" disabled>撤销</button><button id="redo" disabled>重做</button><button id="delete" disabled>删除所选</button></div>
+<div class="bar view"><span>时间范围</span><button data-span="1">1 秒</button><button data-span="5">5 秒</button><button data-span="10">10 秒</button><button data-span="60">评价区</button><button data-span="all">含缓冲</button><button id="zoomIn">放大 ＋</button><button id="zoomOut">缩小 −</button><label>幅值 <select id="gain"><option value="0.5">×0.5</option><option value="1" selected>×1</option><option value="2">×2</option><option value="4">×4</option><option value="8">×8</option><option value="16">×16</option></select></label></div>
+<div class="timeline"><button id="back">←</button><input id="position" type="range" step="1" aria-label="移动时间窗口"><button id="forward">→</button><output id="viewLabel"></output></div>
+<div class="canvasWrap"><canvas id="wave" aria-label="八通道原始波形，点击标记心搏或拖选区间"></canvas><div id="loading">正在加载原始采样…</div></div>
+<div class="caption"><span id="cursor">移动鼠标可查看全局采样索引</span><span>蓝色：缓冲区 · 绿色/红色：人工选择的可判读/不可判读区间</span></div>
+<p class="hint">滚轮缩放时间，Shift＋拖动平移。点击只换算到最近的原始采样点（250 Hz 时为 4 ms），不吸附任何预测峰。缓冲区只供观察。各通道按当前视窗显示居中；幅值放大可能裁切，×1 恢复全幅，原始采样值不变。</p>
+</section>
+<aside>
+<h2>心搏标记</h2><label>心搏存在性<select id="presence"><option value="certain">确定</option><option value="uncertain">不确定</option></select></label><label>搏动类型<select id="beatType"><option value="unknown">未知 / 暂不能判断</option><option value="normal_sinus_supported">有依据的正常窦性</option><option value="non_normal_or_unclassified">非正常或待细分</option></select></label><label>把握程度<select id="confidence"><option value="unspecified">未填写</option><option value="high">高</option><option value="medium">中</option><option value="low">低</option></select></label>
+<h2>区间标记</h2><label>拖选区间类型<select id="intervalType"><option value="readable">可判读</option><option value="unreadable">不可判读</option></select></label><label>不可判读原因<select id="reason"><option value="unspecified">待补充 / 未确定</option><option value="noise">噪声干扰</option><option value="flat_signal">平线或信号缺失</option><option value="channel_disagreement">通道间情况不同，无法确认</option><option value="other">其他</option></select></label><button id="apply" disabled>将当前选择应用到所选标注</button>
+<h2>当前标注</h2><p id="counts"></p><div id="selection">尚未选择标注</div><ul id="annotationList" aria-label="人工标注列表"></ul>
+<label>节律上下文 / 备注<textarea id="context" rows="3" placeholder="可选；不确定时请说明"></textarea></label><label class="check"><input id="completed" type="checkbox">本 case 标注完成</label><p class="hint">完成前需填写标注者、算法暴露情况，并明确标出整个评价区的可判读 / 不可判读范围；未知类型仍可保留。</p>
+</aside>
+</main>
+<footer><p id="message" role="status" aria-live="polite">准备就绪后可开始点击。</p><p>每次修改会尝试缓存浏览器草稿；<strong>缓存不等于磁盘文件</strong>，完成或暂停前请保存 JSON。每次导出生成带 case、修订号与时间的新文件。原始 NPZ、参考模板和图片保持不变。此页面不加载厂商标记或检测结果。</p></footer>
+<script src="cases.js"></script><script src="annotator.js"></script></body></html>

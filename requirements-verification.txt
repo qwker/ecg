@@ -1,0 +1,7 @@
+# Versions used for the local verification run (Python 3.9.13).
+numpy==1.21.5
+scipy==1.9.1
+pandas==1.4.4
+pyarrow==21.0.0
+matplotlib==3.5.2
+wfdb==4.1.2

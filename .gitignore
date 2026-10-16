@@ -1,0 +1,6 @@
+data/
+private/
+outputs/
+__pycache__/
+.venv/
+.venv-ecg/
